@@ -4,8 +4,8 @@ title: "Embedded Answers"
 description: "Instructional and opinion articles on embedded software, plus related anecdotes."
 logo: 'assets/images/logo.png'
 favicon: 'assets/images/logo.png'
-baseurl: file://wsl.localhost/Ubuntu-24.04/home/nick/embeddedanswers/_site
-# baseurl: http://www.embeddedanswers.com
+# baseurl: file://wsl.localhost/Ubuntu-24.04/home/nick/embeddedanswers/_site
+baseurl: http://www.embeddedanswers.com
 include: ["_pages"]
 permalink: /:title/
 
