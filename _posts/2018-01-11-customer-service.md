@@ -8,6 +8,7 @@ image: assets/images/11.jpg
 description: "What is means to apply const to a global variable in C."
 featured: true
 hidden: true
+comments: false
 rating: 3
 ---
 
