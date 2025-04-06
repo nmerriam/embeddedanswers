@@ -17,3 +17,9 @@ comments: false
 </div>
 </div>
 </div>
+
+<!-- Ambition / vision -->
+<!-- Inspiration -->
+<!-- Richard Bird -->
+<!-- Michael Abrash -->
+<!-- IBM magazine -->
