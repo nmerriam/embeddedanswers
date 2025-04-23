@@ -1,0 +1,8 @@
+- Polling latency
+- Preemptive v. non-preemtive scheduling
+- Base+offset addressing
+- Real-time thread-safety
+- Floating point, and how to use it in different contexts without lots of expensive register set save/restore
+- Pipeline optimization
+- Inlining
+- Tail-call optimization
