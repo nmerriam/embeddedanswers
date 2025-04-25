@@ -6,3 +6,5 @@
 - Pipeline optimization
 - Inlining
 - Tail-call optimization
+- Why hard real-time is easy
+- Why hard real-time is difficult
