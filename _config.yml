@@ -11,12 +11,12 @@ permalink: /:title/
 
 # Authors
 authors:
-  sal:
-    name: Nick
-    display_name: Nick
+  nick:
+    name: nick
+    display_name: Nicholas Merriam
     email: support@embeddedanswers.com
     web: https://www.embeddedanswers.com
-    description: "Author of Embedded Answers."
+    description: "Author of Embedded Answers"
 
 # Plugins
 plugins:

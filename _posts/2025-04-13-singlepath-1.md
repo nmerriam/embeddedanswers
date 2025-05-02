@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Single-Path Code (1)"
-author: Nick
+author: nick
 categories: [ C, tutorial ]
 # tags: [red, yellow]
 image: assets/images/singlePath1.png
