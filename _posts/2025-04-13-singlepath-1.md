@@ -32,12 +32,17 @@ In this first article, let us look at some reasons why branchless
 code is so important. First, consider secure, encryption code, where
 different paths give rise to different timing and different power
 signatures. These can weaken the security in unintended ways, making
-branchless code extremely desirable, possibly essential.
+single-path code extremely desirable, possibly essential.
 
-Branchless code for encryption is the most extreme case, where we
-really need the code to contain no branches at all. In most performance
-computing, it is more the case that code with fewer branches beats
-code with more branches. So we are not necessarily talking about pure,
+Single-path code has no conditional branches. Branchless code is
+a subset of single-path code with no branches at all.
+
+Single-path code for encryption is an extreme case, where we
+really need the code to contain no conditional branches at all.
+In most performance computing, it is more the case that code
+with fewer (conditional) branches beats
+code with more (conditional) branches.
+So we are not necessarily talking about pure,
 branchless code, but rather small fragments that can be made branchless.
 
 Modern, performance CPUs are good at executing instructions fast. So

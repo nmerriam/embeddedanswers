@@ -56,7 +56,10 @@ instruction](https://godbolt.org/z/cP9devdKx).
 This underlines the message of the
 [Graphics Programming Black Book](https://github.com/jagregory/abrash-black-book)
 by Michael Abrash, always
-to check our expectations with actual measurement.
+to check our expectations with actual measurement. I think that most
+programmers would agree that the meaning of NoNegative1 is easier to
+understand and check, from reading the source code, compared with
+NoNegative2.
 
 ## Symmetric Saturation
 
@@ -111,9 +114,7 @@ int SignedSaturate2( int x )
 
 
 ```
-int Func1( int x );
-
-int Func2( int x )
+int Func1( int x )
 {
     if( x < 0 )
     {
@@ -121,11 +122,11 @@ int Func2( int x )
     }
     else
     {
-        x = Func1( x );
+        __asm( "nop" );
     }
 
-    x = Func1( x + 1 );
-    x = Func1( x + 2 );
+    __asm( "nop" );
+    __asm( "nop" );
 
     return x;
 }
@@ -135,9 +136,7 @@ int Func2( int x )
 #define LIKELY( condition_ )   ( __builtin_expect( ( condition_ ), 1 ) )
 #define UNLIKELY( condition_ ) ( __builtin_expect( ( condition_ ), 0 ) )
 
-int Func1( int x );
-
-int Func3( int x )
+int Func2( int x )
 {
     if( UNLIKELY( x < 0 ) )
     {
@@ -145,12 +144,14 @@ int Func3( int x )
     }
     else
     {
-        x = Func1( x );
+        __asm( "nop" );
     }
 
-    x = Func1( x + 1 );
-    x = Func1( x + 2 );
+    __asm( "nop" );
+    __asm( "nop" );
 
     return x;
 }
 ```
+
+https://godbolt.org/z/Pc874YE9K
