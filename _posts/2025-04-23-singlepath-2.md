@@ -63,20 +63,10 @@ NoNegative2.
 
 ## Symmetric Saturation
 
-In the second example, we will see how a small change to the source code
-helps the compiler to generate better, branchless code.
+In the second example, we will see how the branchless paradigm can be applied not
+only with a single condition, but also naturally extended to multiple conditions.
 
-The ability of a compiler to surprise the user of a high-level programming
-language is emphasized again by the following example. This is based
-on a real example, where the control algorithms required that results of
-integer arithmetic be saturated to symmetric ranges, such as -15 to +15,
-or -127 to 127. Always the limit was two to the power of n minus one. I asked
-why they had not exploited the Arm SSAT instruction, and they patiently
-explained that SSAT performs an asymmetric saturation, for example in the
-range -128 to +127. And that this made it impossible to use SSAT, they claimed.
-Rather, they wrote code like SignedSaturate1.
-
-```
+```c
 int SignedSaturate1( int x )
 {
     if( x < -127 )     x = -127; // Lower limit
@@ -85,73 +75,27 @@ int SignedSaturate1( int x )
 }
 ```
 
-The current Arm CLANG compiler generates branchless code from this
-example, first using a conditional instruction to truncate on the
-lower limit, and then a second conditional instruction to truncate on
-the upper limit.
+This time, there is no simple transformation to unconditional code. Rather, the
+compiler uses [conditional instructions](https://godbolt.org/z/nhPbxsG6j).
+These always execute but their behavior
+depends on a condition, typically captured in a condition flag. You are probably
+familiar with conditional branch instructions, and other instructions can be made
+conditional in the same way. The Arm A32 instruction set made all instructions
+available either as unconditional or conditional instructions. In fact, the
+unconditional instructions have the same opcode, but with the condition field set to
+select an unconditional "condition".
 
-But this overlooks the fact that SSAT does nearly the correct
-operation. Only one value needs to be corrected. And the compiler
-recognizes when C code corresponds to SSAT, so that the following,
-longer, C code actually generates
-[one instruction fewer](https://godbolt.org/z/3j49bqzE6). And one of
-those instructions is unnecessary and would most likely be elided when the
-function is inlined, as was the case in the real project.
+Other instruction sets (for example Infineon TriCore and PowerPC VLE) include
+conditional instruction sets, after the value of conditional instructions and
+branchless code was proven with Arm architectures. The Arm T32 (Thumb2) allows
+any instruction to be made conditional using an IT instruction prefix.
+Interestingly, the Arm A64 instruction set removes the ability to make any instruction
+conditional. It turns out that making every single instruction conditional gives a
+superscalar pipeline instruction scheduler a hard time, so only the conditional
+instructions most useful for branchless code are implemented in A64.
 
-```
-int SignedSaturate2( int x )
-{
-    if( x < -128 )     x = -128; // Lower limit minus 1
-    else if( 127 < x ) x =  127; // Upper limit
-    if( -128 == x )    x = -127; // Correct lower limit
-    return x;
-}
-```
-
-## Likelihood hints
-
-
-
-
-```
-int Func1( int x )
-{
-    if( x < 0 )
-    {
-        x *= (x / 2);
-    }
-    else
-    {
-        __asm( "nop" );
-    }
-
-    __asm( "nop" );
-    __asm( "nop" );
-
-    return x;
-}
-```
-
-```
-#define LIKELY( condition_ )   ( __builtin_expect( ( condition_ ), 1 ) )
-#define UNLIKELY( condition_ ) ( __builtin_expect( ( condition_ ), 0 ) )
-
-int Func2( int x )
-{
-    if( UNLIKELY( x < 0 ) )
-    {
-        x *= (x / 2);
-    }
-    else
-    {
-        __asm( "nop" );
-    }
-
-    __asm( "nop" );
-    __asm( "nop" );
-
-    return x;
-}
-```
-
-https://godbolt.org/z/Pc874YE9K
+If you are familiar with the Arm instruction set, or the TriCore instruction set,
+you might well be thinking that the compiler should be using the dedicated saturate
+instruction. That will saturate to the range [-128..127] but then we have only one
+value to correct, as -128 would need to become -127. In the next article, we will
+look at exactly this question.
