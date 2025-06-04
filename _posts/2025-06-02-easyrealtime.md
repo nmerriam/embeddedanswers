@@ -13,7 +13,7 @@ comments: false
 
 Hard real-time means software running in a system that only functions correctly
 if results are delivered before hard deadlines. In a hard real-time system, every
-action has a specified timing behavior, typically expressed as  when an event may be
+action has a specified timing behavior, typically expressed as when an event may be
 recognized and the deadline for the reaction to that event.
 
 For example, we might
@@ -49,7 +49,7 @@ It is impossible to know how long to make the time-out. Empirical observations a
 some guesswork must be done by the developers. The result is that
 time-outs get longer and longer, to try to avoid false positives when the system was
 only running a bit slowly, and not actually failing. And then the system takes a
-very long time to detect and respond to actual failure.
+long time to detect and respond to _actual_ failure.
 
 ## Debugging
 
@@ -73,4 +73,3 @@ Return to the timing requirements might seem a bit unwieldy, but imagine
 how much simpler this is than attempting to debug a system without timing
 requirements, where we cannot even clearly identify what is correct, compared with
 what is too slow or too fast.
-
