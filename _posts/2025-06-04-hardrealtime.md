@@ -22,9 +22,27 @@ acceleration features that work against the construction of a hard real-time sys
 ## The Mismatch
 
 Most hardware acceleration features have evolved from desktop/server designs, where
-the overall goal is high throughput and not predictability.
+optimization has largely focussed on throughput and not predictability, as can be
+seen in the following examples.
 
 ### Pipeline
+
+Executing one instruction can be broken down into multiple steps. Different
+architectures identify different steps, but the following make up a representative
+example:
+- Fetch instruction
+- Decode instruction
+- Fetch data from memory (if required)
+- Compute instruction
+- Write data to memory (if required)
+
+Rather obviously, the processor does not have to wait until one instruction has
+finished all of its steps before starting to fetch the next instruction. It is not
+entirely straightforward, since branch prediction might fail, and our speculative
+fetch of what was predicted to be the next instruction might turn out to be incorrect.
+Nevertheless, it is clear that we can make a much faster processor if we can overcome
+these challenges and implement a
+[pipeline](https://en.wikipedia.org/wiki/Instruction_pipelining).
 
 ### Cache
 
