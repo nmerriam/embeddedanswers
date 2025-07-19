@@ -46,6 +46,15 @@ these challenges and implement a
 
 ### Cache
 
+A modern processor can execute instructions faster than they can be fetched
+main code memory and faster than data can be fetched from main data memory.
+To avoid the processor spending most of its time stalled, waiting for memory,
+instruction and data caches can be provided that do not help with the first
+fetch but greatly accelerate repeated accesses to the same address. If we
+have a loop, the first iteration of the loop might be very slow, but every
+subsequent iteration finds the instructions for the loop already in fast
+cache memory.
+
 #### Burst Memory Accesses
 
 ### Multi-core and DMA
