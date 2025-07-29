@@ -12,7 +12,7 @@ comments: false
 ---
 
 Perfect hashing is often overlooked as a way to organize data in
-a hard real-time, embedded system. This is probably because its
+a hard real-time, embedded system. This might be because its
 application is quite limited. Nevertheless, it is an extremely
 effective solution for a certain class of design problems.
 
@@ -59,5 +59,52 @@ When a command ID is received, the system needs to determine
 whether or not it is a valid command ID and, if valid, which
 command to execute. Perfect hashing provides a convenient
 way to quickly map from the received command ID to a bucket that
-contains at most one command. 
+contains at most one command. On receipt of a command ID,
+the following steps are performed:
+- Run the hash function to get the hash value
+ - The execution time of the hash function might vary due
+   to integer divide instructions varying in the number of
+   cycles required, but the worst-case timing can be
+   determined.
+- Look in the appropriate bucket to check that the valid
+  command ID matches the received command ID
+ - The execution time for this array look-up will vary due
+   to varying memory performance, but the worst-case timing
+   can be determined.
+In any event, only one fetch from one bucket is needed. This
+will typically be from slow flash memory, so having only
+one access allows perfect hashing to far outperform linear
+or binary search.
 
+## Disadvantages of perfect hashing
+
+### Increased build time
+
+The time required to derive a perfect hash function can be
+quite large, depending on the set of keys. If there are a
+large number of functions to be determined, this can have
+a noticeable effect on the build time. And if the keys are
+addresses of symbols from a linked and located ELF file,
+we have to link twice. The first link contains only a
+placeholder hash function and array of buckets and is
+used to determine the address keys. Then we derive the
+hash function and bucket array and re-link, checking that
+the key addresses do not change. Linking twice can be
+a painful delay when building a large system. And if
+the second linking changes key addresses, the process can,
+in theory, require a third linking, or even more.
+
+### Number of buckets
+
+When searching for hash function parameters, if collisions
+cannot be avoided then we are forced to add more buckets
+and search again. Apart from taking time to find a solution
+without collisions, the end result might require twice as
+much storage as would be required for a more conventional
+array and search approach.
+
+Our example of 400 32-bit command IDs might increase the
+storage from a packed 1600 bytes to 3200 bytes. Consuming
+an additional 1600 bytes for the timing benefit might be
+a good trade-off. If we had 40000 keys, we might be less
+willing to have 160KB of empty buckets.
