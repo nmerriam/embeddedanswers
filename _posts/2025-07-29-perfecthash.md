@@ -33,7 +33,7 @@ same bucket.
 ### What is a perfect hash function?
 
 A [perfect hash](https://en.wikipedia.org/wiki/Perfect_hash_function)
-is simply a hash table with no collisions. With no collisions,
+is a hash table with no collisions. In the absence of collisions,
 timing behavior is very predictable, so perfect hashing is
 ideally suited to some applications in real-time systems.
 
@@ -42,8 +42,8 @@ ideally suited to some applications in real-time systems.
 Creating a small, fast, hash function with no collisions is
 typically very expensive. It involves searching the space of
 hash function parameters and checking that the current set of keys
-give no collisions. Therefore perfect hashing works best for
-pre-configured data, where the hash function can be derived
+give no collisions. Therefore, perfect hashing works best for
+pre-configured, constant data, where the hash function can be derived
 at build time, rather than at run time.
 
 ### Decoding command IDs
@@ -62,15 +62,15 @@ way to quickly map from the received command ID to a bucket that
 contains at most one command. On receipt of a command ID,
 the following steps are performed:
 - Run the hash function to get the hash value
- - The execution time of the hash function might vary due
-   to integer divide instructions varying in the number of
-   cycles required, but the worst-case timing can be
-   determined.
+    - The execution time of the hash function might vary due
+      to integer divide instructions varying in the number of
+      cycles required, but the worst-case timing can be
+      determined.
 - Look in the appropriate bucket to check that the valid
   command ID matches the received command ID
- - The execution time for this array look-up will vary due
-   to varying memory performance, but the worst-case timing
-   can be determined.
+    - The execution time for this array look-up will vary due
+      to varying memory performance, but the worst-case timing
+      can be determined.
 In any event, only one fetch from one bucket is needed. This
 will typically be from slow flash memory, so having only
 one access allows perfect hashing to far outperform linear
