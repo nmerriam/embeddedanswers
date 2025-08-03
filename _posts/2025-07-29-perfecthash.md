@@ -108,3 +108,15 @@ storage from a packed 1600 bytes to 3200 bytes. Consuming
 an additional 1600 bytes for the timing benefit might be
 a good trade-off. If we had 40000 keys, we might be less
 willing to have 160KB of empty buckets.
+
+### Example
+
+[This worked example](https://godbolt.org/z/77ME97ExP)
+is much smaller, with only 16 x 16-bit values to map to
+16 command IDs. You can argue
+that a linear search of 16 values would perform adequately.
+However, a full-size example would be difficult to present
+like this, and the small example illustrates the key features.
+Note that GCC is able to perform integer division without
+using a divide instruction.
+
