@@ -21,7 +21,7 @@ effective solution for a certain class of design problems.
 A hash table allows data to be indexed by an arbitrary key. A hash function
 maps a key value to a bucket, which contains a number of elements of the
 table. A hash table provides good average performance for a look-up,
-typically faster than binary search and much faster than linear search.
+typically faster than binary search andhttps much faster than linear search.
 
 A hash collision occurs when two keys map to the same bucket. The bucket
 must be searched for the correct table element. Having a few such searches
@@ -111,12 +111,29 @@ willing to have 160KB of empty buckets.
 
 ### Example
 
-[This worked example](https://godbolt.org/z/77ME97ExP)
+[This worked example](https://godbolt.org/z/Yb4add95d)
 is much smaller, with only 16 x 16-bit values to map to
 16 command IDs. You can argue
 that a linear search of 16 values would perform adequately.
 However, a full-size example would be difficult to present
 like this, and the small example illustrates the key features.
-Note that GCC is able to perform integer division without
-using a divide instruction.
+Note that GCC is able to perform
+[integer division without using a divide instruction](https://www.gliwa.com/downloads/hacks/).
+The purpose of this example is to show how easy it can be
+to use perfect hashing.
+
+You might notice that the lookup table size is between three
+and four times the actual data set. This makes it easier to
+find a simple hash function without collisions. For larger
+datasets, we cannot afford such a large ratio and so a
+two-stage approach is used. The first hash function is not
+a perfect injective function, and is used to look up a
+second hash function that separates the data that collide
+on that hash value. As long as the number of data that
+map to the same secondary hash function is small, that
+secondary function can be very simple.
+In the most extreme case, if there is _no_ collision,
+and only one
+datum maps to that hash value, then the function simply
+returns a constant.
 
