@@ -109,7 +109,7 @@ an additional 1600 bytes for the timing benefit might be
 a good trade-off. If we had 40000 keys, we might be less
 willing to have 160KB of empty buckets.
 
-### Example
+## Example with Code
 
 [This worked example](https://godbolt.org/z/Yb4add95d)
 is much smaller, with only 16 x 16-bit values to map to
@@ -137,3 +137,8 @@ and only one
 datum maps to that hash value, then the function simply
 returns a constant.
 
+## Note
+
+If you are wondering why the graphic attached to this blog
+post is a pound sign, it is because the pound sign is called
+the hash sign in British English.
